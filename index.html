@@ -1,1 +1,556 @@
-# facebook-comment-mockup
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Facebook Comment Mockup</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, "Noto Sans Bengali", sans-serif;
+      background: #f0f2f5;
+      color: #1c1e21;
+    }
+
+    .app {
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .wrap {
+      max-width: 1000px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 20px;
+    }
+
+    .panel,
+    .preview {
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: 0 5px 20px #00000012;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .field {
+      margin: 12px 0;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #ccd0d5;
+      border-radius: 9px;
+      font-size: 15px;
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: 0;
+      border-radius: 9px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    #updateBtn {
+      background: #1877f2;
+    }
+
+    #copyBtn {
+      background: #42b72a;
+    }
+
+    #downloadBtn {
+      background: #6c5ce7;
+    }
+
+    .hint {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #65676b;
+      line-height: 1.5;
+    }
+
+    .title {
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .fb {
+      max-width: 650px;
+      margin: 30px auto;
+    }
+
+    .post {
+      color: #65676b;
+      margin-bottom: 20px;
+    }
+
+    .comment {
+      display: flex;
+      gap: 10px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #d8dadf;
+      display: grid;
+      place-items: center;
+      font-weight: bold;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .bubble {
+      background: #f0f2f5;
+      border-radius: 18px;
+      padding: 9px 13px;
+      display: inline-block;
+    }
+
+    .name {
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .text {
+      font-size: 15px;
+      margin-top: 4px;
+      white-space: pre-wrap;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: #65676b;
+      margin: 5px 0 0 12px;
+    }
+
+    .reply {
+      font-weight: bold;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #1877f2;
+      color: white;
+      font-size: 10px;
+      border-radius: 50%;
+      width: 15px;
+      height: 15px;
+      text-align: center;
+      line-height: 15px;
+      margin-left: 3px;
+    }
+
+    @media (max-width: 760px) {
+      .wrap {
+        grid-template-columns: 1fr;
+      }
+
+      .app {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<main class="app">
+
+  <div class="wrap">
+
+    <!-- Control Panel -->
+    <section class="panel">
+
+      <h2>কমেন্ট কাস্টমাইজ করুন</h2>
+
+      <div class="field">
+        <label>নাম</label>
+        <input id="name" value="শুভ রহমান">
+      </div>
+
+      <div class="field">
+        <label>প্রোফাইল ছবি URL</label>
+        <input id="avatar" placeholder="https://...">
+      </div>
+
+      <div class="field">
+        <label>কমেন্ট</label>
+        <textarea id="comment">আপনাদের পোস্টটা সত্যিই অনেক ভালো লেগেছে!</textarea>
+      </div>
+
+      <div class="row">
+
+        <div class="field">
+          <label>Likes</label>
+          <input id="likes" type="number" value="24">
+        </div>
+
+        <div class="field">
+          <label>Replies</label>
+          <input id="replies" type="number" value="3">
+        </div>
+
+      </div>
+
+      <div class="field">
+        <label>সময়</label>
+        <input id="time" value="2h">
+      </div>
+
+      <div class="field">
+        <label>
+          <input id="verified" type="checkbox" checked>
+          Verified-style badge দেখান
+        </label>
+      </div>
+
+      <button id="updateBtn">
+        Preview আপডেট করুন
+      </button>
+
+      <button id="copyBtn">
+        কমেন্ট কপি করুন
+      </button>
+
+      <button id="downloadBtn">
+        Screenshot ডাউনলোড করুন
+      </button>
+
+      <div class="hint">
+        এটি শুধুই ডেমো/মকআপ—আসল Facebook কমেন্ট তৈরি বা পোস্ট করে না।
+      </div>
+
+    </section>
+
+
+    <!-- Preview -->
+    <section class="preview" id="previewBox">
+
+      <div class="title">
+        Facebook Page Comment — Demo
+      </div>
+
+      <div class="fb">
+
+        <div class="post">
+          Page post-এর নিচে একটি কমেন্ট এমনভাবে দেখা যাবে:
+        </div>
+
+        <div class="comment">
+
+          <div class="avatar" id="av">
+            শ
+          </div>
+
+          <div>
+
+            <div class="bubble">
+
+              <div class="name" id="nm">
+                শুভ রহমান
+                <span class="badge" id="bd">✓</span>
+              </div>
+
+              <div class="text" id="tx">
+                আপনাদের পোস্টটা সত্যিই অনেক ভালো লেগেছে!
+              </div>
+
+            </div>
+
+            <div class="meta">
+
+              <span id="tm">2h</span>
+              · 👍
+              <span id="lk">24</span>
+              ·
+              <span class="reply">Reply</span>
+              ·
+              <span id="rp">3</span>
+              replies
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </div>
+
+</main>
+
+
+<script>
+
+function updatePreview() {
+
+  const name =
+    document.getElementById("name").value.trim() || "User";
+
+  const comment =
+    document.getElementById("comment").value;
+
+  const likes =
+    document.getElementById("likes").value || 0;
+
+  const replies =
+    document.getElementById("replies").value || 0;
+
+  const time =
+    document.getElementById("time").value || "now";
+
+  const verified =
+    document.getElementById("verified").checked;
+
+  document.getElementById("nm").childNodes[0].nodeValue =
+    name + " ";
+
+  document.getElementById("tx").textContent =
+    comment;
+
+  document.getElementById("lk").textContent =
+    likes;
+
+  document.getElementById("rp").textContent =
+    replies;
+
+  document.getElementById("tm").textContent =
+    time;
+
+  document.getElementById("bd").style.display =
+    verified ? "inline-block" : "none";
+
+
+  const avatarUrl =
+    document.getElementById("avatar").value.trim();
+
+  const avatar =
+    document.getElementById("av");
+
+
+  if (avatarUrl) {
+
+    avatar.innerHTML = "";
+
+    const img = document.createElement("img");
+
+    img.src = avatarUrl;
+
+    img.onerror = function() {
+      avatar.textContent =
+        name.charAt(0).toUpperCase();
+    };
+
+    avatar.appendChild(img);
+
+  } else {
+
+    avatar.textContent =
+      name.charAt(0).toUpperCase();
+
+  }
+
+}
+
+
+function copyComment() {
+
+  const text =
+    document.getElementById("comment").value;
+
+  navigator.clipboard.writeText(text)
+    .then(function() {
+
+      alert("কমেন্ট কপি হয়েছে!");
+
+    })
+    .catch(function() {
+
+      const textarea =
+        document.createElement("textarea");
+
+      textarea.value = text;
+
+      document.body.appendChild(textarea);
+
+      textarea.select();
+
+      document.execCommand("copy");
+
+      textarea.remove();
+
+      alert("কমেন্ট কপি হয়েছে!");
+
+    });
+
+}
+
+
+function downloadScreenshot() {
+
+  const box =
+    document.getElementById("previewBox");
+
+  const canvas =
+    document.createElement("canvas");
+
+  const width =
+    box.scrollWidth;
+
+  const height =
+    box.scrollHeight;
+
+  const scale = 2;
+
+  canvas.width =
+    width * scale;
+
+  canvas.height =
+    height * scale;
+
+  const ctx =
+    canvas.getContext("2d");
+
+  ctx.scale(scale, scale);
+
+  ctx.fillStyle = "#ffffff";
+
+  ctx.fillRect(
+    0,
+    0,
+    width,
+    height
+  );
+
+  ctx.fillStyle = "#1c1e21";
+
+  ctx.font =
+    "16px Arial";
+
+  let y = 35;
+
+  const lines =
+    box.innerText.split("\n");
+
+  lines.forEach(function(line) {
+
+    ctx.fillText(
+      line,
+      25,
+      y
+    );
+
+    y += 28;
+
+  });
+
+  const link =
+    document.createElement("a");
+
+  link.download =
+    "facebook-comment-mockup.png";
+
+  link.href =
+    canvas.toDataURL("image/png");
+
+  link.click();
+
+}
+
+
+document
+  .getElementById("updateBtn")
+  .addEventListener(
+    "click",
+    updatePreview
+  );
+
+
+document
+  .getElementById("copyBtn")
+  .addEventListener(
+    "click",
+    copyComment
+  );
+
+
+document
+  .getElementById("downloadBtn")
+  .addEventListener(
+    "click",
+    downloadScreenshot
+  );
+
+
+document
+  .querySelectorAll(
+    ".panel input, .panel textarea"
+  )
+  .forEach(function(element) {
+
+    element.addEventListener(
+      "input",
+      updatePreview
+    );
+
+    element.addEventListener(
+      "change",
+      updatePreview
+    );
+
+  });
+
+
+updatePreview();
+
+</script>
+
+</body>
+</html>
